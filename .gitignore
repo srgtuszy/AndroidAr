@@ -18,6 +18,9 @@ gen/
 # Local configuration file (sdk path, etc)
 local.properties
 
+# IntelliJ
+.idea/
+
 # Eclipse project files
 .classpath
 .project
