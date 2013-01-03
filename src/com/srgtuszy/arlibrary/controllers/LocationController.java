@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
 public class LocationController implements LocationListener, android.location.LocationListener {
     private LocationManager locationManager;
@@ -41,6 +42,7 @@ public class LocationController implements LocationListener, android.location.Lo
 
     @Override
     public void onLocationChanged(Location newLocation) {
+        Log.v("AR", "Got fix");
         currentLocation = newLocation;
         if (listener != null) listener.onLocationChanged(currentLocation);
     }
