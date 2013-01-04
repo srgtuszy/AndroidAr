@@ -1,5 +1,23 @@
 package com.srgtuszy.arlibrary.math;
 
+/*
+ * Copyright (C) 2010- Peer internet solutions
+ *
+ * This file was an original part of mixare.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ */
 public class Matrix {
     private static final Matrix tmp = new Matrix();
 
@@ -117,6 +135,23 @@ public class Matrix {
         this.c1 = c1;
         this.c2 = c2;
         this.c3 = c3;
+    }
+
+    public synchronized void set(float[] values) {
+        if (values.length != 9)
+            throw new IllegalArgumentException("Values array must have 9 elements (3x3 matrix)");
+
+        this.a1 = values[0];
+        this.a2 = values[1];
+        this.a3 = values[2];
+
+        this.b1 = values[3];
+        this.b2 = values[4];
+        this.b3 = values[5];
+
+        this.c1 = values[6];
+        this.c2 = values[7];
+        this.c3 = values[8];
     }
 
     public void toIdentity() {

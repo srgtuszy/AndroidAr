@@ -3,7 +3,6 @@ package com.srgtuszy.arlibrary.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.location.Location;
-import android.util.Log;
 import android.view.View;
 import com.srgtuszy.arlibrary.math.Matrix;
 import com.srgtuszy.arlibrary.model.ArItem;
@@ -14,6 +13,7 @@ public class ArView extends View {
     private List<ArItem> arItems;
     private Matrix mRotationMatrix;
     private Location mCurrentLocation;
+    protected float cameraAngle = 180;
 
     public ArView(Context context) {
         super(context);
@@ -40,9 +40,16 @@ public class ArView extends View {
 
         for (ArItem item : arItems) {
             item.update(mCurrentLocation);
-            item.update(canvas, mRotationMatrix);
+            item.update(canvas, mRotationMatrix, cameraAngle);
             item.draw(canvas);
-            Log.v("AR", item.toString());
         }
+    }
+
+    public float getCameraAngle() {
+        return cameraAngle;
+    }
+
+    public void setCameraAngle(float cameraAngle) {
+        this.cameraAngle = cameraAngle;
     }
 }

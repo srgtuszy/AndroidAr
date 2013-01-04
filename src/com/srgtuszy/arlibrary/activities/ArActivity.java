@@ -1,6 +1,7 @@
 package com.srgtuszy.arlibrary.activities;
 
 import android.app.Activity;
+import android.hardware.Camera;
 import android.location.Location;
 import android.os.Bundle;
 import android.widget.FrameLayout;
@@ -16,17 +17,29 @@ public abstract class ArActivity extends Activity implements ArLibraryListener {
     protected CameraView cameraView;
     protected FrameLayout frameLayout;
     protected ArLibrary arLibrary;
+    protected Camera mCamera;
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCamera.stopPreview();
+        mCamera.release();
+        mCamera = null;
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
         arLibrary.stopAr();
+        mCamera.stopPreview();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         arLibrary.startAr();
+        mCamera.startPreview();
     }
 
     @Override
@@ -39,10 +52,12 @@ public abstract class ArActivity extends Activity implements ArLibraryListener {
                 FrameLayout.LayoutParams.FILL_PARENT,
                 FrameLayout.LayoutParams.FILL_PARENT);
 
+        mCamera = Camera.open();
+
         arView = new ArView(this);
         arView.setLayoutParams(params);
 
-        cameraView = new CameraView(this);
+        cameraView = new CameraView(this, mCamera);
         cameraView.setLayoutParams(params);
 
         frameLayout.addView(cameraView);

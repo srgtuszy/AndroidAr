@@ -9,7 +9,7 @@ public interface ArItem {
 
     public void update(Location location);
 
-    public void update(Canvas canvas, Matrix rotationMatrix);
+    public void update(Canvas canvas, Matrix rotationMatrix, float cameraAngle);
 
     public void setY(float y);
 

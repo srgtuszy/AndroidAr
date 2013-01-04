@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.location.Location;
+import android.util.Log;
 import com.srgtuszy.arlibrary.math.CameraModel;
 import com.srgtuszy.arlibrary.math.Matrix;
 import com.srgtuszy.arlibrary.math.PhysicalLocationUtility;
@@ -31,7 +32,7 @@ public class ArItemImpl implements ArItem {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawText(mTitle, 0, mTitle.length() - 1, mX, mY, mPaint);
+        canvas.drawText(mTitle, 0, mTitle.length(), mX, mY, mPaint);
     }
 
     @Override
@@ -48,12 +49,14 @@ public class ArItemImpl implements ArItem {
     }
 
     @Override
-    public void update(Canvas canvas, Matrix rotationMatrix) {
+    public void update(Canvas canvas, Matrix rotationMatrix, float cameraAngle) {
         mTmpMarkerPosition.set(mSymbolVector);
         mTmpMarkerPosition.add(mRelativePosition);
         mTmpMarkerPosition.prod(rotationMatrix);
 
-        CameraModel.projectPoint(mTmpMarkerPosition, mTmpVector, mDistance, canvas);
+        Log.v("AR", String.valueOf(cameraAngle));
+
+        CameraModel.projectPoint(mTmpMarkerPosition, mTmpVector, cameraAngle, canvas);
         mMarkerPosition.set(mTmpVector);
 
         mX = mMarkerPosition.getX();
@@ -102,6 +105,6 @@ public class ArItemImpl implements ArItem {
 
     @Override
     public String toString() {
-        return String.format("%s, x=%f, y=%f", mTitle, mX, mY);
+        return String.format("%s, (x=%f, y=%f)", mTitle, mX, mY);
     }
 }

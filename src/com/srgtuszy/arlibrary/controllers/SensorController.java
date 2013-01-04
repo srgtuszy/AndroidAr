@@ -93,23 +93,16 @@ public class SensorController implements SensorEventListener {
         float[] values = event.values;
 
         if (type == Sensor.TYPE_ACCELEROMETER) {
-            smooth = LowPassFilter.filter(GRAVITY_LOW, GRAVITY_HIGH, values, gravity);
-            gravity[0] = smooth[0];
-            gravity[1] = smooth[1];
-            gravity[2] = smooth[2];
+            gravity = LowPassFilter.filter(GRAVITY_LOW, GRAVITY_HIGH, values, gravity);
 
         } else if (type == Sensor.TYPE_MAGNETIC_FIELD) {
-            smooth = LowPassFilter.filter(MAGNETIC_LOW, MAGNETIC_HIGH, values, magnetic);
-            magnetic[0] = smooth[0];
-            magnetic[1] = smooth[1];
-            magnetic[2] = smooth[2];
+            magnetic = LowPassFilter.filter(MAGNETIC_LOW, MAGNETIC_HIGH, values, magnetic).clone();
         }
 
         if (gravity != null && magnetic != null) {
             SensorManager.getRotationMatrix(temp, null, gravity, magnetic);
             SensorManager.remapCoordinateSystem(temp, SensorManager.AXIS_Y, SensorManager.AXIS_MINUS_X, rotation);
-            cameraMatrix.set(rotation[0], rotation[1], rotation[2], rotation[3], rotation[4],
-                    rotation[5], rotation[6], rotation[7], rotation[8]);
+            cameraMatrix.set(rotation);
 
             arMatrix.toIdentity();
 
@@ -118,7 +111,6 @@ public class SensorController implements SensorEventListener {
             }
 
             arMatrix.prod(cameraMatrix);
-            arMatrix.invert();
 
             if (mListener != null) mListener.onRotationChanged(arMatrix);
         }
